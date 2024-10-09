@@ -1,0 +1,3 @@
+D:\Working\VTCMobile\Projects\Apps\VTCOTT\Source\InteractiveLive\cms-platform\cms-platform\obj\Debug\cms-platform.esproj.CoreCompileInputs.cache
+D:\Working\VTCMobile\Projects\Apps\VTCOTT\Source\InteractiveLive\Cms\interactive-gm\cms-platform\obj\Debug\cms-platform.esproj.CoreCompileInputs.cache
+D:\Working\VTCMobile\Projects\Apps\VTCOTT\Source\InteractiveLive\GM\interactive-gm\cms-platform\obj\Debug\cms-platform.esproj.CoreCompileInputs.cache
