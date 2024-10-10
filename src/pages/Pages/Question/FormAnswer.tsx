@@ -24,6 +24,8 @@ interface AnswerProps{
     setShowPopupUploadImg?:any
     isDeleteAnswer?:boolean
     setDeleteAnswer?:any
+    answer?:any
+    index?:any
 }
 
 const FormAnswer : FC<AnswerProps> = ({
@@ -32,14 +34,16 @@ const FormAnswer : FC<AnswerProps> = ({
     multiAnswer,
     setShowPopupUploadImg,
     setDeleteAnswer,
-    isDeleteAnswer
+    isDeleteAnswer,
+    answer,
+    index
     }) => {
     const dispatch: any = useDispatch();
     const history = useNavigate();
-
+    const active_icon_checkbox=answer.isCorrectAnswer ? "mdi mdi-checkbox-marked mdi-24px question-icon question-icon-active":"mdi mdi-checkbox-marked mdi-24px question-icon"
+    const active_icon_radio=answer.isCorrectAnswer ? "mdi mdi-checkbox-marked-circle mdi-24px question-icon question-icon-active" : "mdi mdi-checkbox-marked-circle mdi-24px question-icon"
 
     useEffect(() => {
-        setAnswers
     }, []);
 
     const handleChangeTitleQuestion=(e:any)=>{
@@ -50,7 +54,17 @@ const FormAnswer : FC<AnswerProps> = ({
         setShowPopupUploadImg(true)
     }
 
-    const checkisCorrectAnswer=(e:any)=>{
+    const checkisCorrectAnswer=()=>{
+        answer.isCorrectAnswer=!answer.isCorrectAnswer;
+        const updatedItems = [...answers]; // Tạo bản sao mới của mảng
+        updatedItems[index] = { ...updatedItems[index], answer }; // Thay đổi object tại index
+        setAnswers(updatedItems);
+
+        
+        // answers[index] = { ...answers[index], ...answer }; 
+        // setAnswers(answers)
+        // setAnswers((item:any)=>({...item[index],answer}))
+        // var item=answer
         // setAnswers((item:any) => ({ ...item, value: e.target.innerHTML }));
     }
 
@@ -65,7 +79,7 @@ const FormAnswer : FC<AnswerProps> = ({
                 <Col className="justify-content-center">
                     {(isDeleteAnswer)?(<i className="mdi mdi-delete mdi-24px question-icon" onClick={setDeleteAnswer}></i>):(<div></div>)}
                     <i className="mdi mdi-image mdi-24px question-icon" onClick={showPopupUploadImg}></i>
-                    {(multiAnswer)?(<i className="mdi mdi-checkbox-marked mdi-24px question-icon" onClick={checkisCorrectAnswer}></i>):(<i className="mdi mdi-checkbox-marked-circle mdi-24px question-icon" onClick={checkisCorrectAnswer}></i>)}
+                    {(multiAnswer)?(<i className={active_icon_checkbox} onClick={checkisCorrectAnswer}></i>):(<i className={active_icon_radio} onClick={checkisCorrectAnswer}></i>)}
                 </Col>
                 <Row className="justify-content-center">
                     <div className="txt-answer">

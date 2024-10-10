@@ -88,7 +88,7 @@ const QuestionCreate = () => {
     const [selectedFiles, setselectedFiles] = useState([]);
     const [files, setFiles] = useState<any>([]);
     const [question, setQuestion] = useState<Question>({value:'', img:''});
-    const [answers, setAnswers] = useState<Answer[]>([{value:'', img:'', isCorrectAnswer:false}, {value:'', img:'', isCorrectAnswer:false}, {value:'', img:'', isCorrectAnswer:true}]);
+    const [answers, setAnswers] = useState<Answer[]>([{value:'', img:'', isCorrectAnswer:true}, {value:'', img:'', isCorrectAnswer:false}, {value:'', img:'', isCorrectAnswer:true}]);
     const [point, setPoint] = useState<Point>({value:'1', label:'1 điểm'});
     const [multiAnswer, setMultiAnswer] = useState<boolean>(false);
     const [isDeleteAnswer, setDeleteAnswer] = useState<boolean>(false);
@@ -127,6 +127,11 @@ const QuestionCreate = () => {
     }
 
     const handleSaveImg=()=>{
+    }
+
+    const handleActionMultiAnswer=(v:boolean)=>{
+        setMultiAnswer(v);
+
     }
 
 
@@ -168,15 +173,15 @@ const QuestionCreate = () => {
                 </Row>
                 <Row>
                     {answers.map((v,i)=>{
-                        return <FormAnswer answers={answers} setAnswers={setAnswers} multiAnswer={multiAnswer} isDeleteAnswer={isDeleteAnswer} setDeleteAnswer={setDeleteAnswer} setShowPopupUploadImg={setShowPopupUploadImg}/>
+                        return <FormAnswer answer={v} index={i} answers={answers} setAnswers={setAnswers} multiAnswer={multiAnswer} isDeleteAnswer={isDeleteAnswer} setDeleteAnswer={setDeleteAnswer} setShowPopupUploadImg={setShowPopupUploadImg}/>
                     })}
                     
                 </Row>
                 <Col>
-                    <Button className={multiAnswer ? "qustion-btn-inactive":"qustion-btn-active"} onClick={()=>setMultiAnswer(false)}>
+                    <Button className={multiAnswer ? "qustion-btn-inactive":"qustion-btn-active"} onClick={()=>handleActionMultiAnswer(false)}>
                         Câu trả lời đúng duy nhất
                     </Button>
-                    <Button className={multiAnswer ? "qustion-btn-active":"qustion-btn-inactive"} onClick={()=>setMultiAnswer(true)}>
+                    <Button className={multiAnswer ? "qustion-btn-active":"qustion-btn-inactive"} onClick={()=>handleActionMultiAnswer(true)}>
                         Nhiều câu trả lời đúng
                     </Button>
                 </Col>
