@@ -30,7 +30,8 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 interface QuestionProps{
     question?: any,
-    setQuestion?: any
+    setQuestion?: any,
+    setShowPopupUploadImg?:any
 }
 
 interface SizeImgQuestion{
@@ -41,7 +42,8 @@ interface SizeImgQuestion{
 
 const FormQuestion : FC<QuestionProps> = ({
     question,
-    setQuestion
+    setQuestion,
+    setShowPopupUploadImg
     }) => {
   
     const [selectedFiles, setselectedFiles] = useState([]);
@@ -84,7 +86,7 @@ const FormQuestion : FC<QuestionProps> = ({
     }
 
     const showPopupUploadImg=()=>{
-        console.log(files)
+        setShowPopupUploadImg(true)
     }
     const handleChangeTitleQuestion=(e:any)=>{
         setQuestion((item:any) => ({ ...item, value: e.target.innerHTML }));
@@ -95,13 +97,19 @@ const FormQuestion : FC<QuestionProps> = ({
 
     return (
         <div className="page-content">
-            <Row>
-                <Button color="success" onClick={showPopupUploadImg} size="30"><i className="mdi mdi-camera align-bottom"></i></Button>
-            </Row>
-            <Row>
-                <div contentEditable="true" data-text="Nhập câu hỏi vào đây." style={{textAlign:'center'}}  onInput={handleChangeTitleQuestion}> 
+            <div className="question-content">
+                <div >
+                    <i className="mdi mdi-image mdi-24px question-icon" onClick={showPopupUploadImg}></i>
                 </div>
-            </Row>
+                <div className="question">
+                    <div contentEditable="true" data-text="Nhập câu hỏi vào đây." style={{textAlign:'center'}}  onInput={handleChangeTitleQuestion}> 
+                    </div>
+                </div>
+            </div>
+            
+            {/* <Row>
+                <Button color="success" onClick={showPopupUploadImg} size="30"></i></Button>
+            </Row> */}
             {/* {(question.img.length>0)?(<>
                 <div>
 

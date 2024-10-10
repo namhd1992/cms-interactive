@@ -1,0 +1,52 @@
+//
+// _question.scss
+//
+
+[contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-text)
+}
+
+.question-content{
+    border: 1px solid gray;
+    
+    .question{
+        height: 200px;
+        max-height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+}
+
+.question-icon{
+    cursor: pointer;
+}
+
+.question-content-answer{
+    border: 1px solid gray;
+    .txt-answer{
+        height: 200px;
+        max-height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+}
+
+.qustion-btn-inactive{
+    margin-right: 10px;
+    background-color: gray;
+}
+
+.qustion-btn-active{
+    margin-right: 10px;
+    background-color: alpha($color: #0a56e4)
+}
+
+
+
+.task-handle{
+    cursor: move;
+}
+
+#task-error-msg{
+    display: none;
+}

@@ -14,7 +14,11 @@ import {
     Button,
     Dropdown,
     DropdownToggle,
-    DropdownMenu
+    DropdownMenu,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    ModalFooter,
 } from "reactstrap";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -35,6 +39,16 @@ import { useDispatch } from "react-redux";
 import { addQuizs as onAddNewQuizs } from "../../../slices/thunks";
 import FormQuestion from "./FormQuestion";
 import FormAnswer from "./FormAnswer";
+
+import { FilePond,  registerPlugin } from 'react-filepond';
+// Import FilePond styles
+import 'filepond/dist/filepond.min.css';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+
 
 interface Question{
     value:string
@@ -71,12 +85,16 @@ const QuestionCreate = () => {
 
 
 
-
+    const [selectedFiles, setselectedFiles] = useState([]);
+    const [files, setFiles] = useState<any>([]);
     const [question, setQuestion] = useState<Question>({value:'', img:''});
-    const [answers, setAnswers] = useState<Answer[]>([{value:'', img:'', isCorrectAnswer:false}, {value:'', img:'', isCorrectAnswer:false}]);
+    const [answers, setAnswers] = useState<Answer[]>([{value:'', img:'', isCorrectAnswer:false}, {value:'', img:'', isCorrectAnswer:false}, {value:'', img:'', isCorrectAnswer:true}]);
     const [point, setPoint] = useState<Point>({value:'1', label:'1 điểm'});
     const [multiAnswer, setMultiAnswer] = useState<boolean>(false);
+    const [isDeleteAnswer, setDeleteAnswer] = useState<boolean>(false);
+    const [isAddAnswer, setAddAnswer] = useState<boolean>(true);
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+    const [showPopupUploadImg, setShowPopupUploadImg] = useState<boolean>(false);
 
     const toggledropDown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -85,8 +103,19 @@ const QuestionCreate = () => {
 
 
     useEffect(() => {
-    
-    }, []);
+        if(answers.length<5){
+            setAddAnswer(true)
+        }else{
+            setAddAnswer(false)
+        }
+
+        if(answers.length>2 && answers.length<5){
+            setDeleteAnswer(true)
+        }else{
+            setDeleteAnswer(false)
+        }
+
+    }, [answers]);
 
     const handleTeamClicks=()=>{
 
@@ -96,9 +125,9 @@ const QuestionCreate = () => {
         setPoint(v);
         toggledropDown();
     }
-    
 
-
+    const handleSaveImg=()=>{
+    }
 
 
     document.title = "Create Question";
@@ -135,12 +164,49 @@ const QuestionCreate = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <FormQuestion question={question} setQuestion={setQuestion}/>
+                    <FormQuestion question={question} setQuestion={setQuestion} setShowPopupUploadImg={setShowPopupUploadImg}/>
                 </Row>
                 <Row>
-                    <FormAnswer answers={answers} setAnswers={setAnswers}/>
+                    {answers.map((v,i)=>{
+                        return <FormAnswer answers={answers} setAnswers={setAnswers} multiAnswer={multiAnswer} isDeleteAnswer={isDeleteAnswer} setDeleteAnswer={setDeleteAnswer} setShowPopupUploadImg={setShowPopupUploadImg}/>
+                    })}
+                    
                 </Row>
+                <Col>
+                    <Button className={multiAnswer ? "qustion-btn-inactive":"qustion-btn-active"} onClick={()=>setMultiAnswer(false)}>
+                        Câu trả lời đúng duy nhất
+                    </Button>
+                    <Button className={multiAnswer ? "qustion-btn-active":"qustion-btn-inactive"} onClick={()=>setMultiAnswer(true)}>
+                        Nhiều câu trả lời đúng
+                    </Button>
+                </Col>
             </Container>
+            <Modal id="myModal" isOpen={showPopupUploadImg}>
+                <ModalHeader>
+                    <h5 className="modal-title" id="myModalLabel">
+                        Thêm hình ảnh
+                    </h5>
+                    <Button type="button" className="btn-close" onClick={() => {setShowPopupUploadImg(false)}} aria-label="Close"></Button>
+                </ModalHeader>
+                <ModalBody>
+                    <FilePond
+                        files={files}
+                        onupdatefiles={setFiles}
+                        // onactivatefile={handleAcceptedFile}
+                        // onremovefile={handleSave}
+                        allowMultiple={false}
+                        maxFiles={1}
+                        name="files"
+                        labelIdle='<span class="filepond--label-action">Upload Image</span>'
+
+                      />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={handleSaveImg}>
+                        Lưu
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };
